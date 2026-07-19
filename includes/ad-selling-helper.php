@@ -1643,7 +1643,9 @@ function quads_ads_disable_form(){
     $quads_settings = get_option( 'quads_settings' );
     $currency = isset($quads_settings['_dacurrency']) ? $quads_settings['_dacurrency'] :'USD';
     $_dacost = isset($quads_settings['_dacost']) ? $quads_settings['_dacost'] :'';
-    $_daduration = isset($quads_settings['_daduration']) ? $quads_settings['_daduration'] :'Monthly';
+    $_daduration = isset($quads_settings['_daduration']) ? $quads_settings['_daduration'] :'monthly';
+    $duration_labels = array( 'monthly' => 'Monatlich', 'yearly' => 'Jährlich' );
+    $_daduration_display = isset( $duration_labels[ strtolower( $_daduration ) ] ) ? $duration_labels[ strtolower( $_daduration ) ] : $_daduration;
     $payment_gateway = isset($quads_settings['_dapayment_gateway']) ? $quads_settings['_dapayment_gateway'] : 'paypal';
     $stripe_publishable_key = '';
     $stripe_secret_key = '';
@@ -1669,7 +1671,7 @@ function quads_ads_disable_form(){
 ?>
 <div class="quads-da-payment-box2">
    <div class="quads-da-payment-box3">
-       <p class="quads-da-title1"><?php echo esc_html($_daduration);?></p>
+       <p class="quads-da-title1"><?php echo esc_html($_daduration_display);?></p>
        <div class="quads-da-content-box">
            <p class="quads-da-sub-content"><?php echo esc_html($currency_symbol) . esc_html($_dacost)?></p>
            <p class="quads-da-sub-content2"><?php echo esc_html__('Heben Sie Ihr Surferlebnis auf das nächste Level – mit unserem Premium-Abo genießen Sie eine vollständig werbefreie Erfahrung, schnellere Ladezeiten, eine übersichtlichere Oberfläche und ungestörten Zugriff auf alle Ihre Inhalte.','quick-adsense-reloaded');?></p>
