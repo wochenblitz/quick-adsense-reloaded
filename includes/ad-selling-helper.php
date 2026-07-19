@@ -1655,23 +1655,26 @@ function quads_ads_disable_form(){
     $user_id = get_current_user_id();
     $redirect_link = quads_get_checkout_redirect_base_url();
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+    $currency_symbols = array( 'USD' => '$', 'EUR' => '€', 'GBP' => '£', 'CHF' => 'CHF', 'JPY' => '¥', 'AUD' => 'A$', 'CAD' => 'C$' );
+    $currency_symbol = isset( $currency_symbols[ $currency ] ) ? $currency_symbols[ $currency ] : $currency;
+
     if ( quads_checkout_return_shows_success_notice( 'disablead' ) ) {
         echo '<div class="quads-danotice quads-danotice-success quads-dais-dismissible">
-        <p>'. esc_html__( 'Successfully Submitted. You will get a confirmation email when your payment is confirmed.','quick-adsense-reloaded' ).'</p></div>';
+        <p>'. esc_html__( 'Erfolgreich übermittelt. Sie erhalten eine Bestätigungs-E-Mail, sobald Ihre Zahlung bestätigt wurde.','quick-adsense-reloaded' ).'</p></div>';
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         } elseif (isset($_GET['status']) && $_GET['status'] == 'cancelled') {
             echo '<div class="quads-danotice quads-danotice-error quads-dais-dismissible">
-        <p>'.esc_html__( 'Payment Cancelled. Please try again.','quick-adsense-reloaded').'</p></div>';
+        <p>'.esc_html__( 'Zahlung abgebrochen. Bitte versuchen Sie es erneut.','quick-adsense-reloaded').'</p></div>';
         }
 ?>
 <div class="quads-da-payment-box2">
    <div class="quads-da-payment-box3">
        <p class="quads-da-title1"><?php echo esc_html($_daduration);?></p>
        <div class="quads-da-content-box">
-           <p class="quads-da-sub-content">$<?php echo esc_html($_dacost)?></p>
-           <p class="quads-da-sub-content2"><?php echo esc_html__('Take your browsing to the next level by upgrading to our premium plan, where you can enjoy an uninterrupted, completely ad-free experience, ensuring faster loading times, a cleaner interface, and seamless access to all your favorite content without any distractions','quick-adsense-reloaded');?></p>
+           <p class="quads-da-sub-content"><?php echo esc_html($currency_symbol) . esc_html($_dacost)?></p>
+           <p class="quads-da-sub-content2"><?php echo esc_html__('Heben Sie Ihr Surferlebnis auf das nächste Level – mit unserem Premium-Abo genießen Sie eine vollständig werbefreie Erfahrung, schnellere Ladezeiten, eine übersichtlichere Oberfläche und ungestörten Zugriff auf alle Ihre Inhalte.','quick-adsense-reloaded');?></p>
        </div>
-       <button type="button" class="quads-da-subcribe-btn" onclick="quadsOpenAdsBlockForm()">Subscribe</button>
+       <button type="button" class="quads-da-subcribe-btn" onclick="quadsOpenAdsBlockForm()">Jetzt abonnieren</button>
    </div>
 </div>
 <div id="quads-ads-block-form" class="quads-da-modal">
@@ -1681,14 +1684,14 @@ function quads_ads_disable_form(){
         <span class="quads-da-close" onclick="quadsCloseAdsBlockForm()">&times;</span>
         <?php if ( ! $user_id ) : ?>
             <div id="user-info-section" class="form-section">
-                <h2><?php echo esc_html__('User Information','quick-adsense-reloaded');?></h2>
-                <label for="full_name"><?php echo esc_html__('Full Name','quick-adsense-reloaded');?></label>
+                <h2><?php echo esc_html__('Benutzerinformationen','quick-adsense-reloaded');?></h2>
+                <label for="full_name"><?php echo esc_html__('Vollständiger Name','quick-adsense-reloaded');?></label>
                 <input type="text" name="full_name" id="full_name" required />
 
-                <label for="email"><?php echo esc_html__('Email','quick-adsense-reloaded');?></label>
+                <label for="email"><?php echo esc_html__('E-Mail','quick-adsense-reloaded');?></label>
                 <input type="email" name="email" id="email" required />
 
-                <label for="password"><?php echo esc_html__('Password','quick-adsense-reloaded');?></label>
+                <label for="password"><?php echo esc_html__('Passwort','quick-adsense-reloaded');?></label>
                 <input type="password" name="password" id="password" required />
             </div>
         <?php endif; ?>
@@ -1699,11 +1702,11 @@ function quads_ads_disable_form(){
         <div id="paypal-button-container"></div>
         <?php if($payment_gateway=='stripe'){?>
             <div>
-                <label>Card Info</label>
+                <label>Karteninformationen</label>
                 <div id="card-element"style="padding:10px"></div>
             </div>
         <?php }?>
-        <button type="submit"><?php echo esc_html__('Proceed for Payment','quick-adsense-reloaded');?></button>
+        <button type="submit"><?php echo esc_html__('Zur Zahlung fortfahren','quick-adsense-reloaded');?></button>
     </div>
 </form>
 <?php if($payment_gateway=='stripe'){ // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion, WordPress.WP.EnqueuedResources.NonEnqueuedScript

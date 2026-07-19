@@ -308,7 +308,7 @@ function quads_disable_add_subscribe() {
 <div class="disable-ads-container" id="disable-ads-block">
 	<div class="da-top-flexbox" style="">
 		<div class="meter-display">
-            Hide Ads for Premium Members by Subscribing
+            Werbung für Premium-Mitglieder ausblenden – Jetzt abonnieren
 		</div>
 		<button class="da-close-button" style="cursor:pointer" onclick="quadsHandleCloseDisableAd()">
 			<svg width="16" height="16" viewBox="0 0 16 16" style="margin-left: 13px;
@@ -320,10 +320,10 @@ function quads_disable_add_subscribe() {
 
 	<div class="da-bottom-flexbox">
 		<div class="message">
-			<span class="da-lead">Hide Ads for Premium Members.</span>
-			<span class="da-sub-lead">Hide Ads for Premium Members by clicking on subscribe button.</span>
+			<span class="da-lead">Werbung für Premium-Mitglieder ausblenden.</span>
+			<span class="da-sub-lead">Werbung ausblenden – klicken Sie auf den Abonnieren-Button.</span>
 		</div>
-		<a class="da-meter-cta" href="<?php echo esc_url( $payment_page );?>" target="_blank">Subscribe Now</a>
+		<a class="da-meter-cta" href="<?php echo esc_url( $payment_page );?>" target="_blank">Jetzt abonnieren</a>
 	</div>
 </div>
 <script>
