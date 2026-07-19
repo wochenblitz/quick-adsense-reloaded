@@ -148,6 +148,7 @@ class QuadsAdListSettings extends Component {
                 _daenable_both_plans : false,
                 _dacost_monthly : '',
                 _dacost_yearly : '',
+                user_roles : [],
             },
             quads_wp_quads_pro_license_key : '',
             importampforwpmsg : "",
@@ -666,6 +667,18 @@ handleCapabilityChange = (event) =>{
       const { settings } = this.state;
       settings.autoads_user_roles = value;
       this.setState(settings);
+  }
+  addUserRoles = (e) => {
+    var options = e.target.options;
+    var value = [];
+    for (var i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    const { settings } = this.state;
+    settings.user_roles = value;
+    this.setState(settings);
   }
   sendCustomerQuery = (e) => {
     e.preventDefault();
@@ -2560,6 +2573,17 @@ handleCapabilityChange = (event) =>{
                              <div className="lazy_loader_at"></div>
                          </label>
                       }
+                     </td>
+                 </tr>
+                 <tr>
+                     <th><label htmlFor="user_roles">{__('Werbung ausblenden für Benutzergruppen', 'quick-adsense-reloaded')}</label></th>
+                     <td>
+                       <select multiple={true} id="user_roles" name="user_roles" value={settings.user_roles} onChange={this.addUserRoles} style={{minWidth:'200px',minHeight:'120px'}}>
+                         {settings.autoads_excl_user_roles && Object.entries(settings.autoads_excl_user_roles).filter(([k]) => k !== 'none').map(([slug, label]) => (
+                           <option key={slug} value={slug}>{label}</option>
+                         ))}
+                       </select>
+                       <p className="description">{__('Benutzergruppen auswählen, die keine Werbung sehen (Strg/Cmd gedrückt halten für Mehrfachauswahl)', 'quick-adsense-reloaded')}</p>
                      </td>
                  </tr>
                  <tr>
