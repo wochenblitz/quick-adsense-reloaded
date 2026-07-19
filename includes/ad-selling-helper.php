@@ -1413,6 +1413,13 @@ function quads_ads_disable_form(){
     margin: auto;
     width: 100%;
 }
+.quads-da-dual-plans{
+    flex-wrap: wrap;
+}
+.quads-da-dual-plans .quads-da-payment-box3{
+    flex: 1 1 280px;
+    max-width: 420px;
+}
 .quads-da-payment-box3{
     padding: 0px 16px 24px 32px;background-color: #fff;
     border: 1px solid #bbb;
@@ -1646,6 +1653,9 @@ function quads_ads_disable_form(){
     $_daduration = isset($quads_settings['_daduration']) ? $quads_settings['_daduration'] :'monthly';
     $duration_labels = array( 'monthly' => 'Monatlich', 'yearly' => 'Jährlich' );
     $_daduration_display = isset( $duration_labels[ strtolower( $_daduration ) ] ) ? $duration_labels[ strtolower( $_daduration ) ] : $_daduration;
+    $_daenable_both_plans = ! empty( $quads_settings['_daenable_both_plans'] );
+    $_dacost_monthly = isset($quads_settings['_dacost_monthly']) ? $quads_settings['_dacost_monthly'] : '';
+    $_dacost_yearly  = isset($quads_settings['_dacost_yearly'])  ? $quads_settings['_dacost_yearly']  : '';
     $payment_gateway = isset($quads_settings['_dapayment_gateway']) ? $quads_settings['_dapayment_gateway'] : 'paypal';
     $stripe_publishable_key = '';
     $stripe_secret_key = '';
@@ -1669,6 +1679,30 @@ function quads_ads_disable_form(){
         <p>'.esc_html__( 'Zahlung abgebrochen. Bitte versuchen Sie es erneut.','quick-adsense-reloaded').'</p></div>';
         }
 ?>
+<?php if ( $_daenable_both_plans && ( '' !== $_dacost_monthly || '' !== $_dacost_yearly ) ) : ?>
+<div class="quads-da-payment-box2 quads-da-dual-plans">
+    <?php if ( '' !== $_dacost_monthly ) : ?>
+    <div class="quads-da-payment-box3">
+        <p class="quads-da-title1">Monatlich</p>
+        <div class="quads-da-content-box">
+            <p class="quads-da-sub-content"><?php echo esc_html($currency_symbol) . esc_html($_dacost_monthly)?></p>
+            <p class="quads-da-sub-content2"><?php echo esc_html__('Heben Sie Ihr Surferlebnis auf das nächste Level – mit unserem Premium-Abo genießen Sie eine vollständig werbefreie Erfahrung, schnellere Ladezeiten, eine übersichtlichere Oberfläche und ungestörten Zugriff auf alle Ihre Inhalte.','quick-adsense-reloaded');?></p>
+        </div>
+        <button type="button" class="quads-da-subcribe-btn" onclick="quadsOpenAdsBlockFormWithPlan('monthly', '<?php echo esc_js($_dacost_monthly); ?>')">Jetzt abonnieren</button>
+    </div>
+    <?php endif; ?>
+    <?php if ( '' !== $_dacost_yearly ) : ?>
+    <div class="quads-da-payment-box3">
+        <p class="quads-da-title1">Jährlich</p>
+        <div class="quads-da-content-box">
+            <p class="quads-da-sub-content"><?php echo esc_html($currency_symbol) . esc_html($_dacost_yearly)?></p>
+            <p class="quads-da-sub-content2"><?php echo esc_html__('Heben Sie Ihr Surferlebnis auf das nächste Level – mit unserem Premium-Abo genießen Sie eine vollständig werbefreie Erfahrung, schnellere Ladezeiten, eine übersichtlichere Oberfläche und ungestörten Zugriff auf alle Ihre Inhalte.','quick-adsense-reloaded');?></p>
+        </div>
+        <button type="button" class="quads-da-subcribe-btn" onclick="quadsOpenAdsBlockFormWithPlan('yearly', '<?php echo esc_js($_dacost_yearly); ?>')">Jetzt abonnieren</button>
+    </div>
+    <?php endif; ?>
+</div>
+<?php else : ?>
 <div class="quads-da-payment-box2">
    <div class="quads-da-payment-box3">
        <p class="quads-da-title1"><?php echo esc_html($_daduration_display);?></p>
@@ -1676,9 +1710,10 @@ function quads_ads_disable_form(){
            <p class="quads-da-sub-content"><?php echo esc_html($currency_symbol) . esc_html($_dacost)?></p>
            <p class="quads-da-sub-content2"><?php echo esc_html__('Heben Sie Ihr Surferlebnis auf das nächste Level – mit unserem Premium-Abo genießen Sie eine vollständig werbefreie Erfahrung, schnellere Ladezeiten, eine übersichtlichere Oberfläche und ungestörten Zugriff auf alle Ihre Inhalte.','quick-adsense-reloaded');?></p>
        </div>
-       <button type="button" class="quads-da-subcribe-btn" onclick="quadsOpenAdsBlockForm()">Jetzt abonnieren</button>
+       <button type="button" class="quads-da-subcribe-btn" onclick="quadsOpenAdsBlockFormWithPlan('<?php echo esc_js($_daduration); ?>', '<?php echo esc_js($_dacost); ?>')">Jetzt abonnieren</button>
    </div>
 </div>
+<?php endif; ?>
 <div id="quads-ads-block-form" class="quads-da-modal">
   <!-- Modal content -->
   <form id="quads-adbuy-form" method="POST" action="<?php echo ($payment_gateway!='stripe')?esc_url(admin_url('admin-ajax.php')):'/process-payment'; ?>" enctype="multipart/form-data">
@@ -1700,6 +1735,8 @@ function quads_ads_disable_form(){
         <input type="hidden" name="action" value="quads_submit_disablead_form" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce( 'quads_submit_disablead_form' ));?>" />
         <input type="hidden" name="redirect_link" id="disablead_redirect_link" value="<?php echo esc_attr( esc_url( $redirect_link ) ); ?>" />
+        <input type="hidden" name="selected_plan" id="quads_selected_plan" value="<?php echo esc_attr($_daduration); ?>" />
+        <input type="hidden" name="selected_price" id="quads_selected_price" value="<?php echo esc_attr($_dacost); ?>" />
         <!-- PayPal Payment Button -->
         <div id="paypal-button-container"></div>
         <?php if($payment_gateway=='stripe'){?>
@@ -1716,6 +1753,11 @@ function quads_ads_disable_form(){
 }?>
 </div>
 <script>
+    function quadsOpenAdsBlockFormWithPlan(plan, price) {
+        document.getElementById('quads_selected_plan').value = plan;
+        document.getElementById('quads_selected_price').value = price;
+        quadsOpenAdsBlockForm();
+    }
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('quads-adbuy-form').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent the form from submitting normally
@@ -2545,8 +2587,19 @@ function quads_handle_submit_disablead_form() {
     
     $quads_settings = get_option( 'quads_settings' );
     $currency = isset($quads_settings['_dacurrency']) ? $quads_settings['_dacurrency'] :'USD';
-    $price = isset($quads_settings['_dacost']) ? $quads_settings['_dacost'] :0;
-    $_daduration = isset($quads_settings['_daduration']) ? $quads_settings['_daduration'] :'Monthly';
+    $_daenable_both_plans = ! empty( $quads_settings['_daenable_both_plans'] );
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing
+    $selected_plan = isset($_POST['selected_plan']) ? sanitize_text_field( wp_unslash( $_POST['selected_plan'] ) ) : '';
+    if ( $_daenable_both_plans && 'yearly' === $selected_plan ) {
+        $price = isset($quads_settings['_dacost_yearly']) ? $quads_settings['_dacost_yearly'] : 0;
+        $_daduration = 'yearly';
+    } elseif ( $_daenable_both_plans && 'monthly' === $selected_plan ) {
+        $price = isset($quads_settings['_dacost_monthly']) ? $quads_settings['_dacost_monthly'] : 0;
+        $_daduration = 'monthly';
+    } else {
+        $price = isset($quads_settings['_dacost']) ? $quads_settings['_dacost'] : 0;
+        $_daduration = isset($quads_settings['_daduration']) ? $quads_settings['_daduration'] : 'monthly';
+    }
     $da_page_id = isset($quads_settings['dapayment_page']) ? $quads_settings['dapayment_page'] : 0;
     $payment_page = get_permalink( $da_page_id );
     $disable_redirect_fallback = ( is_string( $payment_page ) && '' !== $payment_page ) ? $payment_page : quads_get_checkout_redirect_base_url();

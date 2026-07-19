@@ -145,6 +145,9 @@ class QuadsAdListSettings extends Component {
                 _dastripe_secret_key : '',
                 _dacost : '',
                 _daduration : 'monthly',
+                _daenable_both_plans : false,
+                _dacost_monthly : '',
+                _dacost_yearly : '',
             },
             quads_wp_quads_pro_license_key : '',
             importampforwpmsg : "",
@@ -1731,20 +1734,42 @@ handleCapabilityChange = (event) =>{
                     </td>
                   </tr>
                   <tr>
-                      <th scope="row"><label>{__('Diable Ads Cost', 'quick-adsense-reloaded')}</label></th>
+                    <th scope="row"><label>{__('Beide Pläne anbieten', 'quick-adsense-reloaded')}</label></th>
+                    <td>
+                      <label className="quads-switch"><input type="checkbox" name="_daenable_both_plans" checked={settings._daenable_both_plans} onChange={this.formChangeHandler} /><span className="quads-slider"></span></label>
+                      <p>{__('Monatlich und jährlich gleichzeitig anzeigen', 'quick-adsense-reloaded')}</p>
+                    </td>
+                  </tr>
+                  {settings._daenable_both_plans ? <>
+                  <tr>
+                      <th scope="row"><label>{__('Preis monatlich', 'quick-adsense-reloaded')}</label></th>
+                      <td>
+                      <input type="text" name="_dacost_monthly" style={{maxWidth:'25rem',width:'100%'}} value={settings._dacost_monthly} onChange={this.formChangeHandler} />
+                      </td>
+                    </tr>
+                  <tr>
+                      <th scope="row"><label>{__('Preis jährlich', 'quick-adsense-reloaded')}</label></th>
+                      <td>
+                      <input type="text" name="_dacost_yearly" style={{maxWidth:'25rem',width:'100%'}} value={settings._dacost_yearly} onChange={this.formChangeHandler} />
+                      </td>
+                    </tr>
+                  </> : <>
+                  <tr>
+                      <th scope="row"><label>{__('Preis', 'quick-adsense-reloaded')}</label></th>
                       <td>
                       <input type="text" name="_dacost" style={{maxWidth:'25rem',width:'100%'}} value={settings._dacost} onChange={this.formChangeHandler} />
                       </td>
                     </tr>
                   <tr>
-                      <th scope="row"><label>{__('Duration', 'quick-adsense-reloaded')}</label></th>
+                      <th scope="row"><label>{__('Laufzeit', 'quick-adsense-reloaded')}</label></th>
                       <td>
                       <select value={settings._daduration} onChange={this.formChangeHandler} name="_daduration" id="_daduration">
-                        <option value="monthly">{__('Monthly', 'quick-adsense-reloaded')}</option>
-                        <option value="yearly">{__('Yearly', 'quick-adsense-reloaded')}</option>
+                        <option value="monthly">{__('Monatlich', 'quick-adsense-reloaded')}</option>
+                        <option value="yearly">{__('Jährlich', 'quick-adsense-reloaded')}</option>
                       </select>
                       </td>
                     </tr>
+                  </> }
                  {/*  <tr>
                     <th scope="row"><label htmlFor="hide_ajax">{__('Email Notification on Ad Expiry', 'quick-adsense-reloaded')}</label></th>
                     <td>
@@ -3154,20 +3179,42 @@ handleCapabilityChange = (event) =>{
                     </td>
                   </tr>
                   <tr>
-                      <th scope="row"><label>{__('Diable Ads Cost', 'quick-adsense-reloaded')}</label></th>
+                    <th scope="row"><label>{__('Beide Pläne anbieten', 'quick-adsense-reloaded')}</label></th>
+                    <td>
+                      <label className="quads-switch"><input type="checkbox" name="_daenable_both_plans" checked={settings._daenable_both_plans} onChange={this.formChangeHandler} /><span className="quads-slider"></span></label>
+                      <p>{__('Monatlich und jährlich gleichzeitig anzeigen', 'quick-adsense-reloaded')}</p>
+                    </td>
+                  </tr>
+                  {settings._daenable_both_plans ? <>
+                  <tr>
+                      <th scope="row"><label>{__('Preis monatlich', 'quick-adsense-reloaded')}</label></th>
+                      <td>
+                      <input type="text" name="_dacost_monthly" style={{maxWidth:'25rem',width:'100%'}} value={settings._dacost_monthly} onChange={this.formChangeHandler} />
+                      </td>
+                    </tr>
+                  <tr>
+                      <th scope="row"><label>{__('Preis jährlich', 'quick-adsense-reloaded')}</label></th>
+                      <td>
+                      <input type="text" name="_dacost_yearly" style={{maxWidth:'25rem',width:'100%'}} value={settings._dacost_yearly} onChange={this.formChangeHandler} />
+                      </td>
+                    </tr>
+                  </> : <>
+                  <tr>
+                      <th scope="row"><label>{__('Preis', 'quick-adsense-reloaded')}</label></th>
                       <td>
                       <input type="text" name="_dacost" style={{maxWidth:'25rem',width:'100%'}} value={settings._dacost} onChange={this.formChangeHandler} />
                       </td>
                     </tr>
                   <tr>
-                      <th scope="row"><label>{__('Duration', 'quick-adsense-reloaded')}</label></th>
+                      <th scope="row"><label>{__('Laufzeit', 'quick-adsense-reloaded')}</label></th>
                       <td>
                       <select value={settings._daduration} onChange={this.formChangeHandler} name="_daduration" id="_daduration">
-                        <option value="monthly">{__('Monthly', 'quick-adsense-reloaded')}</option>
-                        <option value="yearly">{__('Yearly', 'quick-adsense-reloaded')}</option>
+                        <option value="monthly">{__('Monatlich', 'quick-adsense-reloaded')}</option>
+                        <option value="yearly">{__('Jährlich', 'quick-adsense-reloaded')}</option>
                       </select>
                       </td>
                     </tr>
+                  </> }
                  {/*  <tr>
                     <th scope="row"><label htmlFor="hide_ajax">{__('Email Notification on Ad Expiry', 'quick-adsense-reloaded')}</label></th>
                     <td>
